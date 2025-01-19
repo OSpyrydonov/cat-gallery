@@ -1,5 +1,5 @@
 ## Demo
-[DEMO LINK](https://ospyrydonov.github.io/todo-app/)
+[DEMO LINK](https://cat-gallery-khaki.vercel.app/)
 
 ## How to use
 To run this project yoy need:
