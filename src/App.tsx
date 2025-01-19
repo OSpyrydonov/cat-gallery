@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./services/queryClient";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import BreedFilter from "./components/BreedFilter";
+import CatGallery from "./components/CatGallery";
+import { CatsProvider } from "./context/CatsContext";
+import FavoriteCats from "./components/FavoriteCats";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const [selectedBreed, setSelectedBreed] = useState("");
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <QueryClientProvider client={queryClient}>
+      <CatsProvider>
+        {" "}
+        <Router>
+          <div className="p-4">
+            <h1 className="text-2xl font-bold mb-4">Cat Gallery</h1>
+            <Link to="/favorites" className="text-blue-500 underline">View Favorite Cats</Link>
+            <BreedFilter onBreedChange={setSelectedBreed} />
+            <Routes>
+              <Route
+                path="/"
+                element={<CatGallery breedId={selectedBreed} />}
+              />
+              <Route path="/favorites" element={<FavoriteCats />} />{" "}
+            </Routes>
+          </div>
+        </Router>
+      </CatsProvider>
+    </QueryClientProvider>
+  );
+};
 
-export default App
+export default App;
